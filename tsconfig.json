@@ -3,6 +3,8 @@
     "target": "es6",
     "module": "ES2015",
     "rootDir": "./src",
-    "strict": true
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true
   }
 }

@@ -1,2 +1,9 @@
 Proof Of Work Mechanism / Algorithm:
   Controlling how fast new blocks can be added to the blockchain;
+
+-------
+
+Mining Rewards & transactions:
+
+1] A block can contain multiple transactions
+2] Add rewards for miners;

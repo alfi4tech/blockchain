@@ -1,5 +1,6 @@
 import Transaction from "./classes/Transaction";
-const SHA256 = require("crypto-js/sha256");
+import { SHA256 } from "crypto-js";
+
 class Block {
   timestamp: number;
   transactions: Transaction[];

@@ -6,6 +6,7 @@ class Block {
   data: any;
   prevHash: string;
   hash: string;
+  nonce: number;
 
   constructor(index: number, timestamp: Date, data: any, prevHash = "") {
     this.index = index;
@@ -13,22 +14,47 @@ class Block {
     this.data = data;
     this.prevHash = prevHash;
     this.hash = this.generateHash();
+
+    /* We need to change the data of the block to generate new hash every while loop check right ? 
+    so we are using nonce.
+    Nonce is a random number that doesn't have anything to do with the block but can be changed to something random*/
+    this.nonce = 0;
   }
 
   generateHash() {
     const hash = SHA256(
-      this.index + this.prevHash + this.timestamp + JSON.stringify(this.data)
+      this.index +
+        this.prevHash +
+        this.timestamp +
+        JSON.stringify(this.data) +
+        this.nonce
     ).toString();
 
     return hash;
+  }
+
+  mineBlock(difficulty: number) {
+    // Make the hash of block begin with a certin amount of 0s
+    // Like what bitcoin requires 𖡬
+
+    while (
+      this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")
+    ) {
+      this.nonce++;
+      this.hash = this.generateHash();
+    }
+
+    console.log("block mined ", this.hash);
   }
 }
 
 class Blockchain {
   chain: Block[];
+  difficulty: number;
 
   constructor() {
     this.chain = [this.createGenesisBlock()];
+    this.difficulty = 4;
   }
 
   createGenesisBlock() {
@@ -42,7 +68,7 @@ class Blockchain {
 
   addBlock(newBlock: Block) {
     newBlock.prevHash = this.getLatestBlock().hash;
-    newBlock.hash = newBlock.generateHash();
+    newBlock.mineBlock(this.difficulty);
     this.chain.push(newBlock);
   }
 
@@ -74,8 +100,11 @@ class Blockchain {
 
 let alfi = new Blockchain();
 
+console.log("Mining block ...");
 alfi.addBlock(new Block(1, new Date(Date.now()), { amount: 4 }));
+
+console.log("Mining next block ...");
 alfi.addBlock(new Block(2, new Date(Date.now()), { amount: 10 }));
 
-console.log(JSON.stringify(alfi, null, 4));
+//console.log(JSON.stringify(alfi, null, 4));
 console.log("Is this chain valid ? ", alfi.isChainValid());

@@ -1,0 +1,2 @@
+Proof Of Work Mechanism / Algorithm:
+  Controlling how fast new blocks can be added to the blockchain;

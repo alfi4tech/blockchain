@@ -1,0 +1,17 @@
+{
+  "name": "blockchain",
+  "version": "1.0.0",
+  "description": "learn",
+  "main": "index.js",
+  "author": "moneeb",
+  "license": "MIT",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "@types/crypto-js": "^4.1.1",
+    "@types/node": "^17.0.30"
+  }
+}

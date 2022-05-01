@@ -1,15 +1,16 @@
 const path = require("path");
 
 module.exports = {
-  mode: "none",
-
   entry: "./src/index.ts",
+  mode: "production",
+  watch: true,
   module: {
     rules: [
       {
         test: /\.ts$/,
         use: "ts-loader",
         include: [path.resolve(__dirname, "src")],
+        exclude: /node_modules/,
       },
     ],
   },

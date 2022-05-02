@@ -10,7 +10,7 @@ class Blockchain {
 
   constructor() {
     this.chain = [this.createGenesisBlock()];
-    this.difficulty = 4;
+    this.difficulty = 3;
 
     this.pendingTransactions = [];
     this.miningReward = 100; // If successfully mine a block
@@ -34,11 +34,19 @@ class Blockchain {
     this.chain.push(block);
 
     this.pendingTransactions = [
-      new Transaction(null, miningRewardAddress, this.miningReward),
+      new Transaction(null, miningRewardAddress, this.miningReward), // FROM, TO, AMOUNT
     ];
   }
 
-  createTransaction(t: Transaction) {
+  addTransaction(t: Transaction) {
+    if (!t.fromAddress || !t.toAddress) {
+      throw new Error("Tranasction must include from and to address!");
+    }
+
+    if (!t.isValid()) {
+      throw new Error("Cannot add invalid transaction to the chain!");
+    }
+
     this.pendingTransactions.push(t);
   }
 
@@ -60,6 +68,11 @@ class Blockchain {
 
       if (!(currentBlock.prevHash === prevBlock.hash)) {
         console.log("current block previous hash !== previous hash");
+        return false;
+      }
+
+      // We also have to verify that all the transactions in the current block are valid:
+      if (!currentBlock.IsHasValidTransactions()) {
         return false;
       }
 

@@ -1,27 +1,18 @@
+import "./key-generator";
 import Blockchain from "./classes/Blockchain";
 import Transaction from "./classes/Transaction";
+import { ec } from "./utils/elliptic";
+
+const myKey = ec.keyFromPrivate(
+  "8e8ce2f3280b71c244bcc9b3dfa880ef85f9d9f9a5c2051b2ca118c487d7ea52"
+);
+const myWalletAddress = myKey.getPublic("hex");
 
 let ALFI = new Blockchain();
 
-// This will create a pending transactions:
-const tran1 = new Transaction("addresfrom", "addresTo", 100);
-const tran2 = new Transaction("addresfrom", "addresTo", 50);
-ALFI.createTransaction(tran1);
-ALFI.createTransaction(tran2);
+const tx1 = new Transaction(myWalletAddress, "public key goes here", 10);
+tx1.signTransaction(myKey);
+ALFI.addTransaction(tx1);
 
-// Starting the miner ...
-console.log("Starting the miner ...");
-ALFI.minePendingTransactions("miner-address");
-
-console.log("Balance of miner is ", ALFI.getBalanceOfAddress("miner-address"));
-
-console.log("Starting the miner again ...");
-ALFI.minePendingTransactions("miner-address");
-
-console.log(
-  "Balance of miner again is ",
-  ALFI.getBalanceOfAddress("miner-address")
-);
-
-console.log(JSON.stringify(ALFI, null, 4));
-console.log("Is this chain valid ? ", ALFI.isChainValid());
+console.log("Strting the miner ... ");
+ALFI.minePendingTransactions(myWalletAddress);
